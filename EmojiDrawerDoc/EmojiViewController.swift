@@ -170,6 +170,7 @@ UICollectionViewDropDelegate{
             collectionView.delegate = self
             collectionView.dragDelegate = self
             collectionView.dropDelegate = self
+            collectionView.dragInteractionEnabled = true
         }
     }
     
@@ -178,7 +179,7 @@ UICollectionViewDropDelegate{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
         if let emojiCell = cell as? EmojiCollectionViewCell {
-            let font = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.preferredFont(forTextStyle: .body).withSize(64.0))
+            let font = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.preferredFont(forTextStyle: .body).withSize(32.0))
             let text = NSAttributedString(string: EmojisData.data[indexPath.row], attributes: [.font: font])
             emojiCell.emojiHolder.attributedText = text
         }

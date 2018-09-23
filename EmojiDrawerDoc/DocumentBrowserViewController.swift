@@ -17,19 +17,19 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         delegate = self
         allowsPickingMultipleItems = false
         allowsDocumentCreation = false
-        
-        templateDoc = try? FileManager.default.url(
-            for: .applicationSupportDirectory ,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true
-            ).appendingPathComponent("Untitled.json")
-        if templateDoc != nil {
-            allowsDocumentCreation = FileManager.default.createFile(atPath: templateDoc!.path, contents: Data())
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            templateDoc = try? FileManager.default.url(
+                for: .applicationSupportDirectory ,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+                ).appendingPathComponent("Untitled.json")
+            if templateDoc != nil {
+                allowsDocumentCreation = FileManager.default.createFile(atPath: templateDoc!.path, contents: Data())
+            }
+            
+            
         }
-               
-        
-        
         
     }
     
