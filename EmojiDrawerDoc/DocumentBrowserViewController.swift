@@ -15,32 +15,32 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         super.viewDidLoad()
         
         delegate = self
-        
-        allowsDocumentCreation = true
         allowsPickingMultipleItems = false
+        allowsDocumentCreation = false
         
-        // Update the style of the UIDocumentBrowserViewController
-        // browserUserInterfaceStyle = .dark
-        // view.tintColor = .white
+        templateDoc = try? FileManager.default.url(
+            for: .applicationSupportDirectory ,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+            ).appendingPathComponent("Untitled.json")
+        if templateDoc != nil {
+            allowsDocumentCreation = FileManager.default.createFile(atPath: templateDoc!.path, contents: Data())
+        }
+               
         
-        // Specify the allowed content types of your application via the Info.plist.
         
-        // Do any additional setup after loading the view, typically from a nib.
+        
     }
     
+    
+    var templateDoc : URL?
     
     // MARK: UIDocumentBrowserViewControllerDelegate
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
-        let newDocumentURL: URL? = nil
         
-        // Set the URL for the new document here. Optionally, you can present a template chooser before calling the importHandler.
-        // Make sure the importHandler is always called, even if the user cancels the creation request.
-        if newDocumentURL != nil {
-            importHandler(newDocumentURL, .move)
-        } else {
-            importHandler(nil, .none)
-        }
+        importHandler(templateDoc, .copy)
     }
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL]) {
@@ -65,10 +65,12 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     func presentDocument(at documentURL: URL) {
         
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let documentViewController = storyBoard.instantiateViewController(withIdentifier: "DocumentViewController") as! DocumentViewController
-        documentViewController.document = Document(fileURL: documentURL)
+        let documentViewController = storyBoard.instantiateViewController(withIdentifier: "EmojiDrawerMCV")
+        if let emojiVC = documentViewController.contents as? EmojiViewController {
+            emojiVC.document = EmojiDrawerDocument(fileURL: documentURL)
+        }
         
-        present(documentViewController, animated: true, completion: nil)
+        present(documentViewController, animated: true)
     }
 }
 
