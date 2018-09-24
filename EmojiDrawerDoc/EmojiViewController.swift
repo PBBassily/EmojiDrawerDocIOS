@@ -61,7 +61,7 @@ UICollectionViewDropDelegate{
             document?.thmbnail = artView.snapshot
         }
         dismiss(animated: true) {
-           self.document?.close()
+            self.document?.close()
         }
     }
     
@@ -74,7 +74,7 @@ UICollectionViewDropDelegate{
             }
         })
     }
-   
+    
     // Mark: - Storyboard
     
     var artView =  EmojiView()
@@ -140,6 +140,17 @@ UICollectionViewDropDelegate{
     }
     var imageFetcher : ImageFetcher!
     
+    var suppressWarnings = false
+    func presentBadBackground() {
+        guard !suppressWarnings else {return}
+        var alert = UIAlertController(title: "Warning", message: "more warnings in future ?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default))
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (action) in
+            self.suppressWarnings = true
+        }))
+        present(alert, animated : true)
+        
+    }
     func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
         
         imageFetcher = ImageFetcher() { (url , image) in
@@ -150,7 +161,17 @@ UICollectionViewDropDelegate{
         
         session.loadObjects(ofClass: NSURL.self, completion: { nsurls in
             if let url = nsurls.first as? URL {
-                self.imageFetcher.fetch(url)
+                DispatchQueue.global(qos: .userInitiated).async{
+                    if let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData){
+                        DispatchQueue.main.async {
+                            self.emjiArtBackgroundImage = (url, image)
+                            self.save()
+                        }
+                    } else {
+                        self.presentBadBackground()
+                    }
+                }
+                
             }
         })
         
