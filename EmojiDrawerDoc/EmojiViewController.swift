@@ -25,13 +25,28 @@ UICollectionViewDropDelegate, UIPopoverPresentationControllerDelegate{
                 }
                 
             }
+        } else if segue.identifier == "Embedded Document info" {
+           embedVC  = segue.destination.contents as? DocumentInspectorViewController
+            
+            
         }
+        
     }
+    
+    var embedVC : DocumentInspectorViewController?
+    
+    @IBOutlet weak var embedHeight: NSLayoutConstraint!
+    @IBOutlet weak var embedWidth: NSLayoutConstraint!
+    
     
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
-   
+    
+    @IBAction func close(byUnWindSeque: UIStoryboardSegue){
+        close()
+    }
+    
     
     // Mark: - Model
     
@@ -83,7 +98,7 @@ UICollectionViewDropDelegate, UIPopoverPresentationControllerDelegate{
             document?.updateChangeCount(.done)
         }
     }
-    @IBAction func close(_ sender: UIBarButtonItem) {
+    @IBAction func close(_ sender: UIBarButtonItem? = nil) {
         documentChanged()
         
         if let observer = artViewObserver {
@@ -108,6 +123,12 @@ UICollectionViewDropDelegate, UIPopoverPresentationControllerDelegate{
         
         documentObserver = NotificationCenter.default.addObserver(forName: Notification.Name.UIDocumentStateChanged, object: document, queue: OperationQueue.main, using: { (notifcation) in
             print("document changed to \(self.document!.documentState)")
+            
+            if self.document?.documentState == .normal, let evc = self.embedVC {
+                evc.document = self.document
+                self.embedHeight.constant = evc.preferredContentSize.height
+                self.embedWidth.constant = evc.preferredContentSize.width
+            }
         })
         
         
