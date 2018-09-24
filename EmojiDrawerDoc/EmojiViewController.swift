@@ -11,7 +11,7 @@ import UIKit
 
 class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,
     UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
-UICollectionViewDropDelegate{
+UICollectionViewDropDelegate, UIPopoverPresentationControllerDelegate{
     
     // Mark: - Segueing
     
@@ -20,11 +20,18 @@ UICollectionViewDropDelegate{
             if let destination = segue.destination as? DocumentInspectorViewController {
                 document?.thmbnail = artView.snapshot
                 destination.document = document
+                if let ppc = destination.popoverPresentationController {
+                    ppc.delegate = self
+                }
                 
             }
         }
     }
     
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+   
     
     // Mark: - Model
     
