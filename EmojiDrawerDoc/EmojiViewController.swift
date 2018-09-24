@@ -13,6 +13,18 @@ class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollV
     UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
 UICollectionViewDropDelegate{
     
+    // Mark: - Segueing
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Show Document info" {
+            if let destination = segue.destination as? DocumentInspectorViewController {
+                document?.thmbnail = artView.snapshot
+                destination.document = document
+                
+            }
+        }
+    }
+    
     
     // Mark: - Model
     

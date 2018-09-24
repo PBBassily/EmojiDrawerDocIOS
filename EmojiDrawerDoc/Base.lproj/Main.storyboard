@@ -149,9 +149,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xjs-Am-pDN">
-                                <rect key="frame" x="223" y="95" width="240" height="177"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xjs-Am-pDN">
+                                <rect key="frame" x="392" y="286.5" width="240" height="215"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3co-1C-3Vd">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -199,16 +198,29 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TwQ-Xm-56C">
+                                        <rect key="frame" x="38.5" y="185" width="163" height="30"/>
+                                        <state key="normal" title="Return to the document"/>
+                                        <connections>
+                                            <action selector="done" destination="ZSd-h4-whI" eventType="touchUpInside" id="Jzo-b4-i9O"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="3co-1C-3Vd" firstAttribute="centerY" secondItem="vFq-AS-O8z" secondAttribute="centerY" id="0sA-m3-h8c"/>
-                            <constraint firstItem="3co-1C-3Vd" firstAttribute="centerX" secondItem="vFq-AS-O8z" secondAttribute="centerX" id="eXu-EO-ecr"/>
+                            <constraint firstItem="xjs-Am-pDN" firstAttribute="centerX" secondItem="vFq-AS-O8z" secondAttribute="centerX" id="SDf-Pj-r8M"/>
+                            <constraint firstItem="xjs-Am-pDN" firstAttribute="centerY" secondItem="vFq-AS-O8z" secondAttribute="centerY" id="sFt-ra-QDE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vFq-AS-O8z"/>
                     </view>
+                    <connections>
+                        <outlet property="creationLabel" destination="IIv-j0-yQ0" id="8ha-DG-tWG"/>
+                        <outlet property="sizeLabel" destination="hDI-3U-KSm" id="2D1-s4-VZh"/>
+                        <outlet property="thumbnail" destination="3co-1C-3Vd" id="8CT-iB-x2S"/>
+                        <outlet property="thumbnailAspectRatio" destination="p0D-qC-WoW" id="XRr-Vh-JAJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eap-Tw-n2q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -9,27 +9,62 @@
 import UIKit
 
 class DocumentInspectorViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+    var document : EmojiDrawerDocument? {
+        didSet{
+            self.updateDocument()
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    var shortDateFormatter : DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
+    func updateDocument(){
+        if self.sizeLabel != nil, self.creationLabel != nil, let url = document?.fileURL,
+            let attributes = try? FileManager.default.attributesOfItem(atPath: url.path) {
+            sizeLabel.text = "\(attributes[.size] ?? 0) bytes"
+            if let date = attributes[.creationDate] as? Date {
+                creationLabel.text = shortDateFormatter.string(from: date)
+            }
+            
+            if let documentThumbnail = document?.thmbnail, thumbnailAspectRatio != nil {
+                thumbnail.removeConstraint(thumbnailAspectRatio)
+                thumbnail.image = documentThumbnail
+                thumbnailAspectRatio =  NSLayoutConstraint(
+                    item: thumbnail,
+                    attribute: .width,
+                    relatedBy: .equal,
+                    toItem: thumbnail,
+                    attribute: .height,
+                    multiplier: thumbnail.frame.width / thumbnail.frame.height,
+                    constant: 0
+                )
+            }
+            
+        }
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBOutlet weak var thumbnailAspectRatio: NSLayoutConstraint!
+    
+    @IBOutlet weak var creationLabel: UILabel!
+    @IBOutlet weak var sizeLabel: UILabel!
+    @IBOutlet weak var thumbnail: UIImageView!
+    
+    
+    @IBAction func done() {
+        
+        presentingViewController?.dismiss(animated: true)
+        
     }
-    */
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateDocument()
+    }
+    
 }
