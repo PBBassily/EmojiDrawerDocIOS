@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3866E9312159073E00223705 /* DocumentInspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3866E9302159073E00223705 /* DocumentInspectorViewController.swift */; };
 		38BB02B0215801D60046DC1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BB02AF215801D60046DC1E /* AppDelegate.swift */; };
 		38BB02B2215801D60046DC1E /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BB02B1215801D60046DC1E /* DocumentBrowserViewController.swift */; };
 		38BB02B6215801D60046DC1E /* EmojiDrawerDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BB02B5215801D60046DC1E /* EmojiDrawerDocument.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3866E9302159073E00223705 /* DocumentInspectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentInspectorViewController.swift; sourceTree = "<group>"; };
 		38BB02AC215801D60046DC1E /* EmojiDrawerDoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EmojiDrawerDoc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38BB02AF215801D60046DC1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38BB02B1215801D60046DC1E /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				38BB02B5215801D60046DC1E /* EmojiDrawerDocument.swift */,
 				38BB02B7215801D60046DC1E /* Main.storyboard */,
 				38BB02BF215801D80046DC1E /* Info.plist */,
+				3866E9302159073E00223705 /* DocumentInspectorViewController.swift */,
 			);
 			path = EmojiDrawerDoc;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3866E9312159073E00223705 /* DocumentInspectorViewController.swift in Sources */,
 				38BB02D02158036D0046DC1E /* EmojiCollectionViewCell.swift in Sources */,
 				38BB02CD2158036D0046DC1E /* EmojisData.swift in Sources */,
 				38BB02D22158036E0046DC1E /* EmojiView.swift in Sources */,
