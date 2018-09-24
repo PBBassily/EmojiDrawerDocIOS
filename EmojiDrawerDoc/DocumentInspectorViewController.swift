@@ -32,25 +32,38 @@ class DocumentInspectorViewController: UIViewController {
             }
             
             if let documentThumbnail = document?.thmbnail, thumbnailAspectRatio != nil {
-                thumbnail.removeConstraint(thumbnailAspectRatio)
+               
                 thumbnail.image = documentThumbnail
+                 thumbnail.removeConstraint(thumbnailAspectRatio)
                 thumbnailAspectRatio =  NSLayoutConstraint(
                     item: thumbnail,
                     attribute: .width,
                     relatedBy: .equal,
                     toItem: thumbnail,
                     attribute: .height,
-                    multiplier: thumbnail.frame.width / thumbnail.frame.height,
+                    multiplier: (thumbnail.image?.size.width)! / (thumbnail.image?.size.height)!,
                     constant: 0
                 )
+                thumbnail.addConstraint(thumbnailAspectRatio)
+                
+                if presentationController is UIPopoverPresentationController {
+                    thumbnail!.isHidden = true
+                    returnButton.isHidden = true
+                    view.backgroundColor = .clear
+                }
             }
             
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        if let fittedSize = topLevelStackView?.sizeThatFits(UILayoutFittingCompressedSize) {
+            preferredContentSize = CGSize(width: fittedSize.width + 30 , height: fittedSize.height + 30)        }
+    }
 
+    @IBOutlet weak var topLevelStackView: UIStackView!
     @IBOutlet weak var thumbnailAspectRatio: NSLayoutConstraint!
-    
+    @IBOutlet weak var returnButton: UIButton!
     @IBOutlet weak var creationLabel: UILabel!
     @IBOutlet weak var sizeLabel: UILabel!
     @IBOutlet weak var thumbnail: UIImageView!

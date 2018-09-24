@@ -45,22 +45,31 @@ UICollectionViewDropDelegate{
             emjiArtBackgroundImage = (nil,nil)
             artView.subviews.forEach({$0.removeFromSuperview()})
             if let url = newValue?.url {
-                imageFetcher = ImageFetcher(fetch: url, handler: ({ (url, image) in
-                    DispatchQueue.main.async {
-                        self.emjiArtBackgroundImage = (url, image)
-                        newValue?.emojis.forEach{
-                            let attributedText = $0.text.attributedString(withTextStyle: .body, ofSize: CGFloat($0.size))
-                            self.artView.addLabel(attributedString: attributedText, centeredAt: CGPoint(x: $0.x, y: $0.y))
+                
+                
+                DispatchQueue.global(qos: .userInitiated).async{
+                    if let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData){
+                        DispatchQueue.main.async {
+                            self.emjiArtBackgroundImage = (url, image)
+                            newValue?.emojis.forEach{
+                                let attributedText = $0.text.attributedString(withTextStyle: .body, ofSize: CGFloat($0.size))
+                                self.artView.addLabel(attributedString: attributedText, centeredAt: CGPoint(x: $0.x, y: $0.y))
+                            }
+                            
+                            self.documentChanged()
                         }
+                    } else {
+                        self.presentBadBackground()
                     }
-                }))
+                }
+                
             }
         }
     }
     
     var document : EmojiDrawerDocument?
     
-     func documentChanged() {
+    func documentChanged() {
         print("document changed")
         document?.emojiModel = emojiModel
         if document?.emojiModel != nil {
@@ -340,7 +349,7 @@ extension EmojiModel.EmojiInfo {
             y = Int(label.center.y)
             size = Int(32)
             text = attributedText.string
-           
+            
         } else {
             return nil
             

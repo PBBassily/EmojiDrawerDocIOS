@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -123,11 +124,20 @@
                                 <action selector="close:" destination="ouq-3v-7X5" id="4in-p5-M97"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Info" id="YLE-kw-EgH">
-                            <connections>
-                                <segue destination="ZSd-h4-whI" kind="presentation" identifier="Show Document info" id="XCN-8x-bqx"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Pop" id="cz8-86-WSC">
+                                <connections>
+                                    <segue destination="ZSd-h4-whI" kind="popoverPresentation" identifier="Show Document info" popoverAnchorBarButtonItem="cz8-86-WSC" id="Pqw-99-jNv">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Info" id="YLE-kw-EgH">
+                                <connections>
+                                    <segue destination="ZSd-h4-whI" kind="presentation" identifier="Show Document info" id="XCN-8x-bqx"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="3j5-M6-wla" id="po5-tc-rch"/>
@@ -146,11 +156,11 @@
             <objects>
                 <viewController id="ZSd-h4-whI" customClass="DocumentInspectorViewController" customModule="EmojiDrawerDoc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xYX-4R-T0a">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xjs-Am-pDN">
-                                <rect key="frame" x="392" y="286.5" width="240" height="215"/>
+                                <rect key="frame" x="67.5" y="226" width="240" height="215"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3co-1C-3Vd">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -217,9 +227,11 @@
                     </view>
                     <connections>
                         <outlet property="creationLabel" destination="IIv-j0-yQ0" id="8ha-DG-tWG"/>
+                        <outlet property="returnButton" destination="TwQ-Xm-56C" id="kjS-Ea-pkw"/>
                         <outlet property="sizeLabel" destination="hDI-3U-KSm" id="2D1-s4-VZh"/>
                         <outlet property="thumbnail" destination="3co-1C-3Vd" id="8CT-iB-x2S"/>
                         <outlet property="thumbnailAspectRatio" destination="p0D-qC-WoW" id="XRr-Vh-JAJ"/>
+                        <outlet property="topLevelStackView" destination="xjs-Am-pDN" id="zFK-px-Nb1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eap-Tw-n2q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -245,4 +257,7 @@
             <point key="canvasLocation" x="1479" y="654"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Pqw-99-jNv"/>
+    </inferredMetricsTieBreakers>
 </document>
