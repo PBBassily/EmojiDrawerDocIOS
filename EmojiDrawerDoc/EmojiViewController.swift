@@ -61,12 +61,22 @@ UICollectionViewDropDelegate{
             document?.thmbnail = artView.snapshot
         }
         dismiss(animated: true) {
-            self.document?.close()
+            self.document?.close(completionHandler: { (sucess) in
+                if let observer = self.documentObserver {
+                    NotificationCenter.default.removeObserver(observer)
+                }
+            })
         }
     }
     
+    var documentObserver : NSObjectProtocol?
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        documentObserver = NotificationCenter.default.addObserver(forName: Notification.Name.UIDocumentStateChanged, object: document, queue: OperationQueue.main, using: { (notifcation) in
+            print("document changed to \(self.document!.documentState)")
+        })
+        
+        
         document?.open(completionHandler: { (success) in
             if success {
                 self.title  = self.document?.localizedName
