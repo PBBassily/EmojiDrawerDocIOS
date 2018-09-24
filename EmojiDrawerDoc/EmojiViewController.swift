@@ -48,14 +48,19 @@ UICollectionViewDropDelegate{
     
     var document : EmojiDrawerDocument?
     
-    @IBAction func save(_ sender: UIBarButtonItem? = nil) {
+     func documentChanged() {
+        print("document changed")
         document?.emojiModel = emojiModel
         if document?.emojiModel != nil {
             document?.updateChangeCount(.done)
         }
     }
     @IBAction func close(_ sender: UIBarButtonItem) {
-        save()
+        documentChanged()
+        
+        if let observer = artViewObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
         
         if document?.emojiModel != nil {
             document?.thmbnail = artView.snapshot
@@ -69,9 +74,10 @@ UICollectionViewDropDelegate{
         }
     }
     
-    var documentObserver : NSObjectProtocol?
+    var documentObserver, artViewObserver : NSObjectProtocol?
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         documentObserver = NotificationCenter.default.addObserver(forName: Notification.Name.UIDocumentStateChanged, object: document, queue: OperationQueue.main, using: { (notifcation) in
             print("document changed to \(self.document!.documentState)")
         })
@@ -81,6 +87,9 @@ UICollectionViewDropDelegate{
             if success {
                 self.title  = self.document?.localizedName
                 self.emojiModel = self.document?.emojiModel
+                self.artViewObserver = NotificationCenter.default.addObserver(forName: Notification.Name.EmojiArtViewChanged, object: self.artView, queue: OperationQueue.main, using: { (notfication) in
+                    self.documentChanged()
+                })
             }
         })
     }
@@ -153,7 +162,7 @@ UICollectionViewDropDelegate{
     var suppressWarnings = false
     func presentBadBackground() {
         guard !suppressWarnings else {return}
-        var alert = UIAlertController(title: "Warning", message: "more warnings in future ?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Warning", message: "more warnings in future ?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { (action) in
             self.suppressWarnings = true
@@ -175,7 +184,7 @@ UICollectionViewDropDelegate{
                     if let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData){
                         DispatchQueue.main.async {
                             self.emjiArtBackgroundImage = (url, image)
-                            self.save()
+                            self.documentChanged()
                         }
                     } else {
                         self.presentBadBackground()
@@ -319,10 +328,10 @@ extension EmojiModel.EmojiInfo {
             y = Int(label.center.y)
             size = Int(32)
             text = attributedText.string
-            print("success")
+           
         } else {
             return nil
-            print("fail")
+            
         }
         
     }

@@ -7,7 +7,9 @@
 //
 
 import UIKit
-
+extension Notification.Name {
+    static let EmojiArtViewChanged = Notification.Name("EmojiArtViewBroadcastingName")
+}
 class EmojiView: UIView, UIDropInteractionDelegate {
 
     
@@ -42,6 +44,7 @@ class EmojiView: UIView, UIDropInteractionDelegate {
         session.loadObjects(ofClass: NSAttributedString.self) { (providers) in
             for attributedString in providers as? [NSAttributedString] ?? [] {
                 self.addLabel(attributedString: attributedString, centeredAt: session.location(in: self))
+                NotificationCenter.default.post(name: Notification.Name.EmojiArtViewChanged, object: self)
             }
         }
     }
